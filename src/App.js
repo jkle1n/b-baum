@@ -40,7 +40,7 @@ export default class App extends React.Component {
     let tmpItems = [...this.state.items];
     let tmpNodes = [...this.state.nodes];
     let insertedNodeIndex;
-    items.foreach((newItem) => {
+    items.forEach((newItem) => {
       //check if item is between 0 and 64000
       if (newItem < 0 || newItem > 64000 || isNaN(newItem)) {
         alert("Es dürfen nur Werte zwischen 0 und 64000 eingefügt werden...");
@@ -159,7 +159,7 @@ export default class App extends React.Component {
   deleteItem = (items) => {
     let tmpNodes = [...this.state.nodes];
     let itemId;
-    items.foreach((newItem) => {
+    items.forEach((newItem) => {
       let values = this.findItem(newItem);
       //Return, wenn ein Wert nicht im Baum existiert
       if (values.indexOfItem === undefined) {

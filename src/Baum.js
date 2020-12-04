@@ -3,18 +3,12 @@ import { Node } from './Node';
 import { Card, Typography } from '@material-ui/core';
 
 export class Baum extends React.Component {
-    componentDidUpdate(prevProps) {
-        if (prevProps.found !== this.props.found) {
-            let test = this.props.found;
-        }
-    }
     displayNodes = () => {
         let items = [];
         if (this.props.nodes.length !== 0) {
             let rootIndex = this.props.findIndexOfRoot();
             let index = rootIndex;
             items.push(<div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}><Node param={this.props.param} items={this.props.nodes[rootIndex].items} found={rootIndex === this.props.foundItem} /><br /></div>);
-            let i = 1;
             let childs = this.props.nodes[index].childs;
             let childIndex;
             let newChilds = [];

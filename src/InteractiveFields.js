@@ -4,7 +4,7 @@ B: Baue Baum auf und lösche alles, bis auf 1,2 und 11 (2 = Wurzel) */
 
 import React from 'react';
 import CSVReader from 'react-csv-reader';
-import { Button, TextField, Input, InputAdornment, Tooltip, Card, Typography, Divider, Paper } from '@material-ui/core';
+import { Button, TextField, Input, InputAdornment, Tooltip, Card, Typography, Paper } from '@material-ui/core';
 import "./App.css";
 
 export class InteractiveFields extends React.Component {
@@ -90,6 +90,11 @@ export class InteractiveFields extends React.Component {
                 tmpItems.push(Math.floor(Math.random() * (tmpMax - tmpMin) + tmpMin));
             }
             this.continue(tmpItems, "insert");
+            this.setState(() => ({
+                randomMax: "",
+                randomMin: "",
+                randomParam: ""
+            }))
         }
     }
     insertItemEvent = () => {
