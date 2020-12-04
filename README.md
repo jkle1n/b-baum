@@ -2,7 +2,8 @@
 ## Getting Started
 * Laden Sie das Projekt herunter
 * Öffnen Sie die Console und navigieren in den Ordner, in dem das Projekt liegt
-* Führen Sie den Befehl `docker-compose up` aus
+* Voraussetzungen: docker und docker-compose
+* Führen Sie den Befehl `docker-compose up` aus (mit Adminrechten)
 * Öffnen Sie die Anwendung im Browser `http://localhost:3000/`
 
 ## Funktionen
@@ -12,7 +13,7 @@
     * Alle anderen Textfelder und Buttons sind dann inaktiv
 * Durch einen Klick auf den Button "Baum löschen" kann der gesamte Baum gelöscht werden
 * Bei "Parameter einfügen" kann die Anzahl der Schlüssel pro Knoten bestimmt werden
-    * Ist p = 3, dann können im Wurzelknoten 1 - 2*p-1, also 1-5 Elemente sein. In Kindknoten beträgt die Anzahl der Elemente dann p-2*p-1, also 3-5.
+    * Ist p = 3, dann können im Wurzelknoten 1 - 2xp-1, also 1-5 Elemente sein. In Kindknoten beträgt die Anzahl der Elemente dann p-2xp-1, also 3-5.
 ### Einfügen
 * Es dürfen nur Zahlen von 0 bis 64000 eingefügt werden.
 * Doppelte Werte dürfen nicht eingefügt werden.
