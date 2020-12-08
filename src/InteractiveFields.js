@@ -200,7 +200,7 @@ export class InteractiveFields extends React.Component {
                         <span style={{ float: "right" }}>
                             <Button onClick={this.continueEvent} variant="contained" disabled={this.state.itemsToInsert.length === 0 && this.state.itemsToDelete.length === 0} >Weiter</Button>
                         </span>
-                    </Tooltip>
+                    </Tooltip><br />
                     <br /><Input
                         label="Grad"
                         value={this.state.param}
@@ -220,7 +220,6 @@ export class InteractiveFields extends React.Component {
                             <Button onClick={this.stepBack} variant="contained" disabled={!this.state.stepBack} >Rückgängig</Button>
                         </span>
                     </Tooltip>
-
                 </Paper>
                 <Paper className="paper">
                     <Typography>
