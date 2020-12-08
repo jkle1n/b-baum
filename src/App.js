@@ -14,7 +14,7 @@ export default class App extends React.Component {
       param: 3,
       items: [],
       nodes: [],
-      foundItem: undefined
+      foundItem: { nodeIndex: undefined, itemIndex: undefined }
     }
   }
   updateParam = (newParam) => {
@@ -40,6 +40,7 @@ export default class App extends React.Component {
     let tmpItems = [...this.state.items];
     let tmpNodes = [...this.state.nodes];
     let insertedNodeIndex;
+    let indexOfInsertedItem;
     items.forEach((newItem) => {
       //check if item is between 0 and 64000
       if (newItem < 0 || newItem > 64000 || isNaN(newItem)) {
@@ -80,7 +81,7 @@ export default class App extends React.Component {
       let newIndex = index;
       while (!this.validateNode(tmpNodes[newIndex].items, tmpNodes, newIndex)) {
         index = newIndex;
-        let indexOfInsertedItem = tmpNodes[newIndex].items.indexOf(newItem);
+        indexOfInsertedItem = tmpNodes[newIndex].items.indexOf(newItem);
         let node = [...tmpNodes[index].items];
         let splitIndex = Math.round(node.length / 2) - 1;
         tmpNodes[index].items = node.slice(0, splitIndex);    //New Left Node
@@ -141,11 +142,13 @@ export default class App extends React.Component {
       }
       console.log(tmpItems);
       console.log(tmpNodes);
+      this.setState(() => ({
+        foundItem: { nodeIndex: insertedNodeIndex, itemIndex: tmpNodes[insertedNodeIndex].items.indexOf(newItem) }
+      }))
     })
     this.setState(() => ({
       nodes: tmpNodes,
-      items: tmpItems,
-      foundItem: insertedNodeIndex
+      items: tmpItems
     }));
   }
   getMaxValueOfLeftChild = (node) => {
@@ -217,7 +220,7 @@ export default class App extends React.Component {
     })
     this.setState(() => ({
       nodes: tmpNodes,
-      foundItem: undefined
+      foundItem: { nodeIndex: undefined, itemIndex: undefined }
     }))
   }
   fixUnderflow = (tmpNodes, nodeIndex) => {
@@ -308,7 +311,7 @@ export default class App extends React.Component {
     let values = this.findItem(searchedItem);
     if (values.indexOfItem !== undefined) {
       this.setState(() => ({
-        foundItem: values.indexOfNode,
+        foundItem: { nodeIndex: values.indexOfNode, itemIndex: values.indexOfItem },
       }))
     }
     return values;

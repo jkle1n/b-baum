@@ -8,7 +8,7 @@ export class Baum extends React.Component {
         if (this.props.nodes.length !== 0) {
             let rootIndex = this.props.findIndexOfRoot();
             let index = rootIndex;
-            items.push(<div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}><Node param={this.props.param} items={this.props.nodes[rootIndex].items} found={rootIndex === this.props.foundItem} /><br /></div>);
+            items.push(<div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}><Node param={this.props.param} items={this.props.nodes[rootIndex].items} foundIndex={rootIndex === this.props.foundItem.nodeIndex ? this.props.foundItem.itemIndex : undefined} /><br /></div>);
             let childs = this.props.nodes[index].childs;
             let childIndex;
             let newChilds = [];
@@ -16,7 +16,7 @@ export class Baum extends React.Component {
             while (childs.length !== 0) {
                 for (let j = 0; j < childs.length; j++) {
                     childIndex = this.props.findIndexOfNode(childs[j]);
-                    tmpItems.push(<Node param={this.props.param} items={this.props.nodes[childIndex].items} found={childIndex === this.props.foundItem} />);
+                    tmpItems.push(<Node param={this.props.param} items={this.props.nodes[childIndex].items} foundIndex={childIndex === this.props.foundItem.nodeIndex ? this.props.foundItem.itemIndex : undefined} />);
                     newChilds = newChilds.concat(this.props.nodes[childIndex].childs);
                 }
                 items.push(<div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>{tmpItems}</div>);
