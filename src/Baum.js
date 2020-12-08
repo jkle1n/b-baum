@@ -17,6 +17,7 @@ export class Baum extends React.Component {
                 while (childs.length !== 0) {
                     for (let j = 0; j < childs.length; j++) {
                         childIndex = this.props.findIndexOfNode(childs[j]);
+                        if (childIndex === -1) return;
                         tmpItems.push(<Node param={this.props.param} items={this.props.nodes[childIndex].items} foundIndex={childIndex === this.props.foundItem.nodeIndex ? this.props.foundItem.itemIndex : undefined} />);
                         newChilds = newChilds.concat(this.props.nodes[childIndex].childs);
                     }
