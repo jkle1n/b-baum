@@ -17,6 +17,8 @@ export class InteractiveFields extends React.Component {
             itemsToInsert: [],
             insertedItems: 0,
             randomParam: undefined,
+            stepBack: false,
+            lockInteraction: false
         }
     }
     setParam = (e) => {
@@ -42,8 +44,10 @@ export class InteractiveFields extends React.Component {
             })
         }
         if (items) {
-            this.continue(items, "insert");
-            this.setState(() => ({ tmpItems: '' }))
+            this.saveItemsToStepBack().then(() => {
+                this.continue(items, "insert");
+                this.setState(() => ({ tmpItems: '' }))
+            })
         }
     }
     setDeleteItem = (e) => {
@@ -52,11 +56,13 @@ export class InteractiveFields extends React.Component {
     }
     deleteItem = () => {
         if (this.state.itemsToDelete) {
-            let itemsToDelete = this.state.itemsToDelete.split(",");
-            itemsToDelete = itemsToDelete.map((item) => {
-                return parseInt(item);
+            this.saveItemsToStepBack().then(() => {
+                let itemsToDelete = this.state.itemsToDelete.split(",");
+                itemsToDelete = itemsToDelete.map((item) => {
+                    return parseInt(item);
+                })
+                this.continue(itemsToDelete, "delete");
             })
-            this.continue(itemsToDelete, "delete");
         }
     }
     setSearchItem = (e) => {
@@ -84,21 +90,26 @@ export class InteractiveFields extends React.Component {
             alert("Bitte definieren Sie die Anzahl und eine Unter- und Obergrenze");
         }
         else {
-            let tmpItems = [];
-            for (let i = 0; i < tmpParam; i++) {
-                //Zufallszahlen zwischen min und max-1
-                tmpItems.push(Math.floor(Math.random() * (tmpMax - tmpMin) + tmpMin));
-            }
-            this.continue(tmpItems, "insert");
-            this.setState(() => ({
-                randomMax: "",
-                randomMin: "",
-                randomParam: ""
-            }))
+            this.saveItemsToStepBack().then(() => {
+                let tmpItems = [];
+                for (let i = 0; i < tmpParam; i++) {
+                    //Zufallszahlen zwischen min und max-1
+                    tmpItems.push(Math.floor(Math.random() * (tmpMax - tmpMin) + tmpMin));
+                }
+                this.continue(tmpItems, "insert");
+                this.setState(() => ({
+                    randomMax: "",
+                    randomMin: "",
+                    randomParam: ""
+                }))
+            })
         }
+
     }
     insertItemEvent = () => {
-        this.insertItem();
+        if (this.state.tmpItems !== undefined) {
+            this.saveItemsToStepBack().then(() => { this.insertItem(); })
+        }
     }
     insertItemsFromCsv = (data, fileInfo) => {
         let items;
@@ -111,15 +122,28 @@ export class InteractiveFields extends React.Component {
                 return parseInt(item);
             })
         }
-        let answer = prompt(items + " einfügen?\nLöschen Sie den Inhalt des Textfeldes um alle Elemente auf einmal einzufügen.", 'schrittweise');
-        if (answer !== null) {
-            if (answer === "schrittweise") {
-                this.continue(items, "insert");
-            }
-            else {
-                this.props.insertItem(items);
-            }
+        if (items.length !== 0) {
+            this.saveItemsToStepBack().then(() => {
+                let answer = prompt(items + " einfügen?\nLöschen Sie den Inhalt des Textfeldes um alle Elemente auf einmal einzufügen.", 'schrittweise');
+                if (answer !== null) {
+                    if (answer === "schrittweise") {
+                        this.continue(items, "insert");
+                    }
+                    else {
+                        this.props.insertItem(items);
+                    }
+                }
+            });
         }
+        else {
+            alert("Die csv-Datei enthält keine gültigen Werte.")
+        }
+    }
+    saveItemsToStepBack = () => {
+        this.setState(() => ({
+            stepBack: true,
+        }))
+        return new Promise((resolve) => this.props.saveItemsToStepBack().then(resolve));
     }
     continueEvent = () => {
         this.continue();
@@ -152,7 +176,16 @@ export class InteractiveFields extends React.Component {
             this.props.deleteItem([tmpItem]);
         }
     }
-
+    stepBack = () => {
+        //wenn mitten in einer Operation abgebrochen wird, so müssen die Interaktionsfelder wieder enabled werden
+        this.setState(() => ({
+            stepBack: false,
+            itemsToInsert: [],
+            itemsToDelete: [],
+            lockInteraction: false
+        }))
+        this.props.stepBack();
+    }
     render() {
 
         return (
@@ -182,6 +215,11 @@ export class InteractiveFields extends React.Component {
                         placeholder="Grad einfügen"
                         disabled={this.state.lockInteraction}
                     />
+                    <Tooltip title="Die zuletzt ausgeführten, zusammen gehörigen Operationen werden rückgängig gemacht.\n Es kann nur eine Operationenabfolge rückgängig gemacht werden" placement="top-start">
+                        <span style={{ float: "right" }}>
+                            <Button onClick={this.stepBack} variant="contained" disabled={!this.state.stepBack} >Rückgängig</Button>
+                        </span>
+                    </Tooltip>
 
                 </Paper>
                 <Paper className="paper">

@@ -7,6 +7,7 @@ export class Baum extends React.Component {
         let items = [];
         if (this.props.nodes.length !== 0) {
             let rootIndex = this.props.findIndexOfRoot();
+            rootIndex = rootIndex === -1 ? 0 : rootIndex;
             let index = rootIndex;
             items.push(<div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}><Node param={this.props.param} items={this.props.nodes[rootIndex].items} foundIndex={rootIndex === this.props.foundItem.nodeIndex ? this.props.foundItem.itemIndex : undefined} /><br /></div>);
             let childs = this.props.nodes[index].childs;

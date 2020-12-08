@@ -14,7 +14,8 @@ export default class App extends React.Component {
       param: 3,
       items: [],
       nodes: [],
-      foundItem: { nodeIndex: undefined, itemIndex: undefined }
+      foundItem: { nodeIndex: undefined, itemIndex: undefined },
+      stepBackItems: []
     }
   }
   updateParam = (newParam) => {
@@ -27,6 +28,15 @@ export default class App extends React.Component {
       return node.id === id;
     }))
   }
+  saveItemsToStepBack = () => {
+    return new Promise((resolve) => this.setState(() => ({ stepBackItems: [...this.state.items] }), resolve));
+  }
+  stepBack = () => {
+    this.setState(() => ({
+      items: [...this.state.stepBackItems],
+      stepBackItems: []
+    }), this.insertItem([...this.state.stepBackItems], true))
+  }
   findIndexOfRoot = (nodes) => {
     nodes = nodes || this.state.nodes;
     return nodes.indexOf(nodes.find((node) => {
@@ -36,9 +46,10 @@ export default class App extends React.Component {
   sortItems = (items) => {
     return items.sort((a, b) => a - b);
   }
-  insertItem = (items) => {
-    let tmpItems = [...this.state.items];
-    let tmpNodes = [...this.state.nodes];
+  insertItem = (items, stepBack) => {
+    //bei stepBack = true wird der Baum neu aufgebaut
+    let tmpItems = stepBack ? [] : [...this.state.items];
+    let tmpNodes = stepBack ? [] : [...this.state.nodes];
     let insertedNodeIndex;
     let indexOfInsertedItem;
     items.forEach((newItem) => {
@@ -140,8 +151,6 @@ export default class App extends React.Component {
         }
 
       }
-      console.log(tmpItems);
-      console.log(tmpNodes);
       this.setState(() => ({
         foundItem: { nodeIndex: insertedNodeIndex, itemIndex: tmpNodes[insertedNodeIndex].items.indexOf(newItem) }
       }))
@@ -216,7 +225,6 @@ export default class App extends React.Component {
           }
         }
       }
-      console.log(tmpNodes);
     })
     this.setState(() => ({
       nodes: tmpNodes,
@@ -376,7 +384,9 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App" >
-        <InteractiveFields updateParam={this.updateParam} insertItem={this.insertItem} deleteItem={this.deleteItem} searchItem={this.searchItem} clearNodes={this.clearNodes} />
+        <InteractiveFields updateParam={this.updateParam} insertItem={this.insertItem}
+          deleteItem={this.deleteItem} searchItem={this.searchItem} clearNodes={this.clearNodes}
+          saveItemsToStepBack={this.saveItemsToStepBack} stepBack={this.stepBack} />
 
         <Baum param={this.state.param} nodes={this.state.nodes} findIndexOfRoot={this.findIndexOfRoot} findIndexOfNode={this.findIndexOfNode} foundItem={this.state.foundItem} />
 
