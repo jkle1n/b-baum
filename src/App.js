@@ -175,7 +175,7 @@ export default class App extends React.Component {
         tmpNodes[itemIndex].items[itemNodeIndex] = tmpNodes[indexOfMaxChildNode].items.pop();
         let fatherIndex;
         itemIndex = indexOfMaxChildNode;
-        while (!this.validateNode(tmpNodes[itemIndex].items)) {
+        while (!this.validateNode(tmpNodes[itemIndex].items, tmpNodes, itemIndex)) {
           itemId = tmpNodes[itemIndex].id;
 
           values = this.fixUnderflow(tmpNodes, itemIndex);
@@ -200,7 +200,7 @@ export default class App extends React.Component {
         else {
           tmpNodes[itemIndex].items.splice(itemNodeIndex, 1);
           let fatherIndex;
-          while (!this.validateNode(tmpNodes[itemIndex].items)) {
+          while (!this.validateNode(tmpNodes[itemIndex].items, tmpNodes, itemIndex)) {
             itemId = tmpNodes[itemIndex].id;
             values = this.fixUnderflow(tmpNodes, itemIndex);
             tmpNodes = values.tmpNodes;
