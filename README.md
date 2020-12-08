@@ -12,8 +12,12 @@
 * Der Button "Weiter" wird aktiv, wenn mehrere Elemente schrittweise eingefügt werden
     * Alle anderen Textfelder und Buttons sind dann inaktiv
 * Durch einen Klick auf den Button "Baum löschen" kann der gesamte Baum gelöscht werden
-* Bei "Parameter einfügen" kann die Anzahl der Schlüssel pro Knoten bestimmt werden
-    * Ist p = 3, dann können im Wurzelknoten 1 - 2xp-1, also 1-5 Elemente sein. In Kindknoten beträgt die Anzahl der Elemente dann p-2xp-1, also 3-5.
+* Bei "Grad einfügen" kann die Anzahl der Schlüssel pro Knoten bestimmt werden
+    * Ist p = 5, dann können im Wurzelknoten 1 bis p-1, also 1-4 Elemente sein. In Kindknoten beträgt die Anzahl der Elemente dann round(p/2)-1 bis p-1, also 2-4.
+* Über den Button "Rückgängig" kann eine Operationenfolge rückgängig gemacht werden
+    * Wurden zum Beispiel 3 Elemente aus dem Baum gelöscht und drückt anschließend auf "Rückgängig", so wird der Baum angezeigt, bevor diese 3 Elemente gelöscht wurden
+    * Fügt man zufällige Zahlen ein und möchte diesen Schritt wieder rückgängig machen, so kann dies auch über den Button "Rückgängig" erledigt werden. Dies ist auch möglich, wenn die Operationenfolge noch nicht abgeschlossen ist.
+
 ### Einfügen
 * Es dürfen nur Zahlen von 0 bis 64000 eingefügt werden.
 * Doppelte Werte dürfen nicht eingefügt werden.
