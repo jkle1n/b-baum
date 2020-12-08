@@ -11,7 +11,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      param: 2,
+      param: 3,
       items: [],
       nodes: [],
       foundItem: undefined
@@ -237,10 +237,10 @@ export default class App extends React.Component {
         //Der Knoten hat 2 Partner
         let leftPartnerIndex = this.findIndexOfNode(tmpNodes[fatherIndex].childs[leftIndex], tmpNodes);
         let rightPartnerIndex = this.findIndexOfNode(tmpNodes[fatherIndex].childs[rightIndex], tmpNodes);
-        if (tmpNodes[leftPartnerIndex].items.length > this.state.param - 1) {
+        if (tmpNodes[leftPartnerIndex].items.length > Math.round(this.state.param / 2) - 1) {
           tmpNodes = this.balance(tmpNodes, leftPartnerIndex, nodeIndex, fatherIndex, "left", index);
         }
-        else if (tmpNodes[rightPartnerIndex].items.length > this.state.param - 1) {
+        else if (tmpNodes[rightPartnerIndex].items.length > Math.round(this.state.param / 2) - 1) {
           tmpNodes = this.balance(tmpNodes, rightPartnerIndex, nodeIndex, fatherIndex, "right", index);
         }
         else {
@@ -252,7 +252,7 @@ export default class App extends React.Component {
         let partner = leftIndex !== -1 ? "left" : "right";
         let partnerIndex = this.findIndexOfNode(tmpNodes[fatherIndex].childs[partner === "left" ? leftIndex : rightIndex], tmpNodes);
         //balanciere, wenn möglich
-        if (tmpNodes[partnerIndex].items.length > this.state.param - 1) {
+        if (tmpNodes[partnerIndex].items.length > Math.round(this.state.param / 2) - 1) {
           tmpNodes = this.balance(tmpNodes, partnerIndex, nodeIndex, fatherIndex, partner, index)
         }
         else {
@@ -356,12 +356,12 @@ export default class App extends React.Component {
   validateNode = (items, tmpNodes, indexOfNode) => {
     let nodes = tmpNodes || this.state.nodes;
     //root darf auch nur 1 Element enthalten
-    if (indexOfNode !== undefined && nodes[indexOfNode].fatherId === undefined && items.length < 2 * this.state.param) {
+    if (indexOfNode !== undefined && nodes[indexOfNode].fatherId === undefined && items.length < this.state.param) {
       return true;
     }
     else {
-      //validate = true, wenn die Anzahl der Elemente eines Knotens zwischen param und 2*param-1 liegt
-      return items.length < 2 * this.state.param && items.length >= this.state.param - 1;
+      //validate = true, wenn die Anzahl der Elemente eines Knotens zwischen param/2 und param liegt
+      return items.length < this.state.param && items.length >= Math.round(this.state.param / 2) - 1;
     }
   }
   clearNodes = () => {

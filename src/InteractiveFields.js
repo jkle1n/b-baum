@@ -11,7 +11,7 @@ export class InteractiveFields extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            param: 2,
+            param: 3,
             tmpItems: "",
             itemsToDelete: [],
             itemsToInsert: [],
@@ -25,10 +25,10 @@ export class InteractiveFields extends React.Component {
     }
     updateParam = () => {
         var newParam = parseInt(this.state.param);
-        if (newParam >= 2) {
+        if (newParam >= 3) {
             this.props.updateParam(newParam);
         }
-        else { alert("Der Parameter muss >= 2 sein.") }
+        else { alert("Der Parameter muss >= 3 sein.") }
     }
     setNewItem = (e) => {
         e.persist();
@@ -169,17 +169,17 @@ export class InteractiveFields extends React.Component {
                         </span>
                     </Tooltip>
                     <br /><Input
-                        label="Parameter"
+                        label="Grad"
                         value={this.state.param}
                         onChange={this.setParam}
-                        min={2}
+                        min={3}
                         onKeyPress={(e) => { if (e.key === "Enter") { this.updateParam() }; }}
                         endAdornment={
                             <InputAdornment position="end">
-                                <Button onClick={this.updateParam} disabled={this.state.lockInteraction} >Parameter ändern</Button>
+                                <Button onClick={this.updateParam} disabled={this.state.lockInteraction} >Grad ändern</Button>
                             </InputAdornment>
                         }
-                        placeholder="Parameter einfügen"
+                        placeholder="Grad einfügen"
                         disabled={this.state.lockInteraction}
                     />
 
